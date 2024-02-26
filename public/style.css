@@ -1,6 +1,30 @@
-
 body {
   margin: 0;
-  overflow: hidden;
+  
 }
 
+main {
+  position: absolute;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+h1 {
+  font-size: 72px;
+  color: white;
+
+}
+
+h2 {
+  font-size: 64px;
+  color: white;
+}
+
+p {
+  font-size: 48px;
+  color: white;
+}

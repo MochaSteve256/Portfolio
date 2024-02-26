@@ -1,8 +1,7 @@
-import { Simulate } from "react-dom/test-utils";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 
-//scene, camera, renderer setup
+// scene, camera, renderer setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -10,88 +9,145 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000,
 );
-camera.position.z = 5;
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
 
-//shader
-//sources
-///*
-const vertexShader = `
-  varying vec3 vNormal;
-
-  void main() {
-      vNormal = normalize(normalMatrix * normal);
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }`;
-const fragmentShader = `
-  varying vec3 vNormal;
-
-  void main() {
-      float edgeWidth = 0.1; // Adjust the width of the silhouette edge
-      float normalThreshold = 0.5; // Adjust the normal threshold to control the silhouette edge
-
-      vec3 normal = normalize(vNormal);
-      float dotProduct = abs(dot(normal, vec3(0.0, 0.0, 1.0)));
-
-      // Check if the dot product is within the threshold to identify the silhouette edge
-      if (dotProduct < edgeWidth) {
-          gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0); // Set the silhouette edge color (white)
-      } else {
-          discard; // Discard fragments that are not part of the silhouette edge
-      }
-  }`;
-//shader material
-const silhouetteShaderMaterial = new THREE.ShaderMaterial({
-  vertexShader: vertexShader,
-  fragmentShader: fragmentShader,
+const cameraOffsetX = -3;
+const cameraOffsetY = 1;
+const cameraOffsetZ = -5;
+const cameraRotationOffsetX = 0;
+const cameraRotationOffsetY = -2;
+const cameraRotationOffsetZ = 0;
+camera.position.x = cameraOffsetX;
+camera.position.y = cameraOffsetY;
+camera.position.z = cameraOffsetZ;
+camera.rotation.x = cameraRotationOffsetX;
+camera.rotation.y = cameraRotationOffsetY;
+camera.rotation.z = cameraRotationOffsetZ;
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector("#bg") as HTMLCanvasElement
 });
-//*/
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.render(scene, camera);
 
-//cube
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-//const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, silhouetteShaderMaterial);
-scene.add(cube);
-
-//lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.04);
-scene.add(ambientLight);
-const pointLight = new THREE.DirectionalLight(0xffffff, 1);
-pointLight.position.set(1, 2, 1);
-scene.add(pointLight);
-
-//skybox
-const loader = new THREE.CubeTextureLoader();
-const texture = loader.load([
-  "skybox_a/px_Nero AI_Photo_x4.png",
-  "skybox_a/nx_Nero AI_Photo_x4.png",
-  "skybox_a/py_Nero AI_Photo_x4.png",
-  "skybox_a/ny_Nero AI_Photo_x4.png",
-  "skybox_a/pz_Nero AI_Photo_x4.png",
-  "skybox_a/nz_Nero AI_Photo_x4.png",
+// skybox
+const cubeLoader = new THREE.CubeTextureLoader();
+const texture = cubeLoader.load([
+  "skybox/a/px.png",
+  "skybox/a/nx.png",
+  "skybox/a/py.png",
+  "skybox/a/ny.png",
+  "skybox/a/pz.png",
+  "skybox/a/nz.png",
 ]);
 scene.background = texture;
 
-//helpers
+// lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.04);
+scene.add(ambientLight);
+const pointLight = new THREE.DirectionalLight(0xffffff, 10);
+pointLight.position.set(.8, .3, 4.8);
+scene.add(pointLight);
+
+// helpers
 const lightHelper = new THREE.DirectionalLightHelper(pointLight);
 scene.add(lightHelper);
 const gridHelper = new THREE.GridHelper(10, 10);
 scene.add(gridHelper);
-//controls
-const controls = new OrbitControls(camera, renderer.domElement);
 
-//animation function
+// cube
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+// github skyline mesh
+const skylineLoader = new STLLoader();
+skylineLoader.load(
+  "MochaSteve256-2023.stl",
+  function (geometry) {
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x005533,
+      specular: 0x111111,
+      shininess: 200,
+      flatShading: true
+    });
+    const mesh = new THREE.Mesh(geometry as THREE.BufferGeometry, material);
+    mesh.scale.set(0.02, 0.02, 0.02);
+    mesh.rotation.x = -.5 * Math.PI;
+    rotateInWorld(mesh, -90, 0, 0);
+    mesh.position.x = -2;
+    mesh.position.z = -4;
+    scene.add(mesh);
+  }
+)
+
+// animation function
 function animate() {
   requestAnimationFrame(animate);
 
   cube.rotation.x += 0.01;
   cube.rotation.y += 0.01;
-  cube.rotation.z += 0.05;
+  cube.rotation.z += 0.03;
 
-  controls.update();
   renderer.render(scene, camera);
 }
+
+// generate stars
+function addStar() {
+  const geometry = new THREE.SphereGeometry(0.2, 24, 24);
+  // material colors
+  const colors = [
+    0xffffff,
+    0xffffff,
+    0xffffff,
+    0xffffff,
+    0xffffff,
+    0x7700ff,
+    0x00ff00,
+    0xffaa00,
+    0xff0000,
+    0x00ffff,
+    0xffff00
+  ]
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  const material = new THREE.MeshBasicMaterial({ color: randomColor });
+  const star = new THREE.Mesh(geometry, material);
+
+  const [x, y, z] = Array(3).fill(0).map(() => THREE.MathUtils.randFloatSpread(100));
+
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+Array(400).fill(0).forEach(addStar);
+
+// window resize
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', onWindowResize, false);
+
+function rotateInWorld(obj: THREE.Object3D, x: number, y: number, z: number) {
+  // Create Euler angles from current rotation
+  const currentRotation = new THREE.Euler().setFromQuaternion(obj.quaternion, 'XYZ');
+
+  // Calculate rotation differences
+  const deltaX = THREE.MathUtils.degToRad(x) - currentRotation.x;
+  const deltaY = THREE.MathUtils.degToRad(y) - currentRotation.y;
+  const deltaZ = THREE.MathUtils.degToRad(z) - currentRotation.z;
+
+  // Apply rotations
+  obj.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), deltaX);
+  obj.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), deltaY);
+  obj.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), deltaZ);
+}
+// move stuff on scroll
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+  camera.position.z = t * -0.01 + cameraOffsetZ;
+  camera.position.y = t * -0.001 + cameraOffsetY;
+  rotateInWorld(camera, 0, t * -0.002, 0);
+}
+document.body.onscroll = moveCamera;
 
 animate();
