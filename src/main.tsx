@@ -124,7 +124,7 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize, false);
 
-function setRotation(obj: THREE.Object3D, x: number, y: number, z: number) {
+function setRotation(obj: THREE.Object3D, x: number, y: number, z: number): void {
   const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), x);
   const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), y);
   const qZ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), z);
@@ -135,6 +135,12 @@ function setRotation(obj: THREE.Object3D, x: number, y: number, z: number) {
   obj.quaternion.multiply(qX);
   obj.quaternion.multiply(qY);
   obj.quaternion.multiply(qZ);
+}
+function lerpVectors(vec1: THREE.Vector3, vec2: THREE.Vector3, amount: number): THREE.Vector3 {
+  const x = vec1.x * amount + vec2.x * (1 - amount);
+  const y = vec1.y * amount + vec2.y * (1 - amount);
+  const z = vec1.z * amount + vec2.z * (1 - amount);
+  return new THREE.Vector3(x, y, z);
 }
 function rotateObjectToPoint(object: THREE.Object3D, targetPoint: THREE.Vector3): void {
   // Calculate the direction vector from the object's position to the target point
@@ -158,7 +164,7 @@ const smoothVelocityThreshold: number = 20;
 const acceleration: number = .8;
 let smoothT: number = 0;
 let tV: number = 0;
-function moveCamera() {
+function moveCamera(): void {
   const delta = smoothT - document.body.getBoundingClientRect().top;
   if (delta < 0 && Math.abs(delta) > smoothDeltaThreshold) {
     tV += acceleration;
@@ -188,7 +194,7 @@ function moveCamera() {
 //document.body.onscroll = moveCamera;
 
 // animation function
-function animate() {
+function animate(): void {
   requestAnimationFrame(animate);
 
   cube.rotation.x += 0.01;
