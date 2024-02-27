@@ -10,9 +10,9 @@ const camera = new THREE.PerspectiveCamera(
   1000,
 );
 
-const cameraOffsetX = -3;
+const cameraOffsetX = -4;
 const cameraOffsetY = 1;
-const cameraOffsetZ = -5;
+const cameraOffsetZ = -6;
 const cameraRotationOffsetX = 0;
 const cameraRotationOffsetY = -2;
 const cameraRotationOffsetZ = 0;
@@ -48,8 +48,6 @@ pointLight.position.set(.8, .3, 4.8);
 scene.add(pointLight);
 
 // helpers
-const lightHelper = new THREE.DirectionalLightHelper(pointLight);
-scene.add(lightHelper);
 const gridHelper = new THREE.GridHelper(10, 10);
 scene.add(gridHelper);
 
@@ -79,24 +77,14 @@ skylineLoader.load(
   }
 )
 
-// animation function
-function animate() {
-  requestAnimationFrame(animate);
-
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  cube.rotation.z += 0.03;
-
-  console.log(camera.rotation);
-
-  renderer.render(scene, camera);
-}
-
 // generate stars
-function addStar() {
-  const geometry = new THREE.SphereGeometry(0.2, 24, 24);
+function addStar(hRange: number, vRange: number, hOffset: number, vOffset: number) {
+  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
   // material colors
   const colors = [
+    0xffffff,
+    0xffffff,
+    0xffffff,
     0xffffff,
     0xffffff,
     0xffffff,
@@ -112,13 +100,21 @@ function addStar() {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   const material = new THREE.MeshBasicMaterial({ color: randomColor });
   const star = new THREE.Mesh(geometry, material);
-
-  const [x, y, z] = Array(3).fill(0).map(() => THREE.MathUtils.randFloatSpread(100));
-
+  
+  let [x, y, z] = Array(3).fill(0);
+  x = Math.random() * hRange - hOffset;
+  y = Math.random() * vRange - vOffset;
+  z = Math.random() * hRange - hOffset;
+  
   star.position.set(x, y, z);
   scene.add(star);
 }
-Array(400).fill(0).forEach(addStar);
+Array(1500).fill(0).forEach(() => {
+  addStar(300, 320, 150, 20);
+});
+Array(100).fill(0).forEach(() => {
+  addStar(80, 80, 40, 40);
+})
 
 // window resize
 function onWindowResize() {
@@ -132,22 +128,78 @@ function setRotation(obj: THREE.Object3D, x: number, y: number, z: number) {
   const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), x);
   const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), y);
   const qZ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), z);
-
+  
   //reset rotation
   obj.quaternion.set(0, 0, 0, 1);
-
+  
   obj.quaternion.multiply(qX);
   obj.quaternion.multiply(qY);
   obj.quaternion.multiply(qZ);
 }
-// move stuff on scroll
-function moveCamera() {
-  const t = document.body.getBoundingClientRect().top;
-  camera.position.z = t * -0.01 + cameraOffsetZ;
-  camera.position.y = t * -0.002 + cameraOffsetY;
-  setRotation(camera, t * 0.0002 + cameraRotationOffsetX, t * -0.002 + cameraRotationOffsetY, 0 + cameraRotationOffsetZ);
-
+function rotateObjectToPoint(object: THREE.Object3D, targetPoint: THREE.Vector3): void {
+  // Calculate the direction vector from the object's position to the target point
+  const direction = new THREE.Vector3();
+  direction.subVectors(targetPoint, object.position).normalize();
+  
+  // Create a lookAt matrix to orient the object towards the target point
+  const lookAtMatrix = new THREE.Matrix4();
+  lookAtMatrix.lookAt(object.position, targetPoint, object.up);
+  
+  // Extract the rotation quaternion from the lookAt matrix
+  const quaternion = new THREE.Quaternion();
+  quaternion.setFromRotationMatrix(lookAtMatrix);
+  
+  // Apply the rotation to the object
+  object.quaternion.copy(quaternion);
 }
-document.body.onscroll = moveCamera;
+// move stuff on scroll
+const smoothDeltaThreshold: number = 200;
+const smoothVelocityThreshold: number = 20;
+const acceleration: number = .8;
+let smoothT: number = 0;
+let tV: number = 0;
+function moveCamera() {
+  const delta = smoothT - document.body.getBoundingClientRect().top;
+  if (delta < 0 && Math.abs(delta) > smoothDeltaThreshold) {
+    tV += acceleration;
+    if (tV < 0)
+      if (Math.abs(tV) > smoothVelocityThreshold)
+      tV -= acceleration;
+      else
+        tV += acceleration / 5;
+  }
+  else if (delta > 0 && Math.abs(delta) > smoothDeltaThreshold) {
+    tV -= acceleration;
+    if (tV > 0)
+      if (Math.abs(tV) > smoothVelocityThreshold)
+        tV += acceleration;
+      else
+        tV -= acceleration / 5;
+  }
+  smoothT += tV;
+  tV *= .97;
+
+  console.log(smoothT, tV);
+
+  camera.position.z = smoothT * -0.01 + cameraOffsetZ;
+  camera.position.y = smoothT * -0.002 + cameraOffsetY;
+}
+
+//document.body.onscroll = moveCamera;
+
+// animation function
+function animate() {
+  requestAnimationFrame(animate);
+
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.01;
+  cube.rotation.z += 0.03;
+
+  moveCamera();
+
+  rotateObjectToPoint(camera, cube.position);
+
+  renderer.render(scene, camera);
+}
 
 animate();
