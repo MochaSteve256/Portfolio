@@ -72,8 +72,7 @@ skylineLoader.load(
     });
     const mesh = new THREE.Mesh(geometry as THREE.BufferGeometry, material);
     mesh.scale.set(0.02, 0.02, 0.02);
-    mesh.rotation.x = -.5 * Math.PI;
-    rotateInWorld(mesh, -90, 0, 0);
+    setRotation(mesh, -0.5 * Math.PI, 0, 0);
     mesh.position.x = -2;
     mesh.position.z = -4;
     scene.add(mesh);
@@ -87,6 +86,8 @@ function animate() {
   cube.rotation.x += 0.01;
   cube.rotation.y += 0.01;
   cube.rotation.z += 0.03;
+
+  console.log(camera.rotation);
 
   renderer.render(scene, camera);
 }
@@ -127,26 +128,25 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize, false);
 
-function rotateInWorld(obj: THREE.Object3D, x: number, y: number, z: number) {
-  // Create Euler angles from current rotation
-  const currentRotation = new THREE.Euler().setFromQuaternion(obj.quaternion, 'XYZ');
+function setRotation(obj: THREE.Object3D, x: number, y: number, z: number) {
+  const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), x);
+  const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), y);
+  const qZ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), z);
 
-  // Calculate rotation differences
-  const deltaX = THREE.MathUtils.degToRad(x) - currentRotation.x;
-  const deltaY = THREE.MathUtils.degToRad(y) - currentRotation.y;
-  const deltaZ = THREE.MathUtils.degToRad(z) - currentRotation.z;
+  //reset rotation
+  obj.quaternion.set(0, 0, 0, 1);
 
-  // Apply rotations
-  obj.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), deltaX);
-  obj.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), deltaY);
-  obj.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), deltaZ);
+  obj.quaternion.multiply(qX);
+  obj.quaternion.multiply(qY);
+  obj.quaternion.multiply(qZ);
 }
 // move stuff on scroll
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
   camera.position.z = t * -0.01 + cameraOffsetZ;
-  camera.position.y = t * -0.001 + cameraOffsetY;
-  rotateInWorld(camera, 0, t * -0.002, 0);
+  camera.position.y = t * -0.002 + cameraOffsetY;
+  setRotation(camera, t * 0.0002 + cameraRotationOffsetX, t * -0.002 + cameraRotationOffsetY, 0 + cameraRotationOffsetZ);
+
 }
 document.body.onscroll = moveCamera;
 
