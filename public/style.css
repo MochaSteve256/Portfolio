@@ -1,30 +1,41 @@
 body {
-  margin: 0;
-  
+    margin: 0;
 }
 
 main {
-  position: absolute;
+    position: absolute;
 }
 
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+h1,
+h2 {
+    font-family: "Courier New", Courier, monospace, Helvetica, sans-serif;
+    color: white;
 }
 
 h1 {
-  font-size: 72px;
-  color: white;
-
+    font-size: 72px;
 }
 
 h2 {
-  font-size: 64px;
-  color: white;
+    font-size: 64px;
 }
 
 p {
-  font-size: 48px;
-  color: white;
+    color: white;
+    font-size: 48px;
+}
+
+header {
+    background-color: rgba(130, 100, 150, 0.8);
+    width: fit-content;
+    padding: 10px 50px 10px 50px;
+    margin-top: 30px;
+    margin-left: 30px;
+    border-radius: 10px;
 }
