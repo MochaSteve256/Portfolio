@@ -4,25 +4,35 @@ body {
 }
 
 nav {
-    background-color: #333;
+    position: fixed;
+    width: 100%;
+    background-color: #333333;
     color: #fff;
     text-align: center;
     font-family: Prompt;
+    z-index: 9999;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 nav ul li {
     display: inline-block;
     margin-right: 20px;
+    transition: transform 0.1s ease;
 }
 nav ul li a {
     color: #fff;
     text-decoration: none;
     padding: 10px 15px;
     display: block;
+    transition: background-color 0.2s ease;
+}
+nav ul li:hover {
+    transform: scale(1.2);
 }
 nav ul li a:hover {
     background-color: #555;
@@ -41,6 +51,16 @@ canvas {
 
 #text {
     display: block;
+}
+
+header {
+    background-color: rgb(54, 54, 54, 0.7);
+    width: fit-content;
+    padding: 10px 50px 10px 50px;
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-radius: 10px;
 }
 
 h1 {
@@ -67,15 +87,6 @@ h2 {
     filter: drop-shadow(0 0 15px #4400ff);
 }
 
-header {
-    background-color: rgb(54, 54, 54, 0.7);
-    width: fit-content;
-    padding: 10px 50px 10px 50px;
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
-    border-radius: 10px;
-}
 p {
     font-family: Inter;
     color: white;

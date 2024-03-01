@@ -186,6 +186,16 @@ const smoothDeltaThreshold: number = 200;
 const acceleration: number = .8;
 let smoothT: number = document.body.getBoundingClientRect().top; 
 let tV: number = 0;
+let autoScrolling: boolean = false;
+
+// Event listener for anchored scrolling
+document.addEventListener("customScrollStart", () => {
+  autoScrolling = true;
+});
+document.addEventListener("customScrollEnd", () => {
+  autoScrolling = false;
+})
+
 function moveCamera(): void {
   const delta = smoothT - document.body.getBoundingClientRect().top;
   if (delta < 0 && Math.abs(delta) > smoothDeltaThreshold) {
@@ -197,12 +207,19 @@ function moveCamera(): void {
   smoothT += tV;
   tV *= 0.97;
 
-  //console.log(camera.position);
+  // Don't use smoothT when autoScrolling
+  if (autoScrolling) {
+    if (document.body.getBoundingClientRect().top !== 0) {
+      smoothT = document.body.getBoundingClientRect().top;
+      tV = 0;
+    }
+  }
 
   camera.position.z = smoothT * -0.01 + cameraOffsetZ;
   camera.position.y = smoothT * -0.002 + cameraOffsetY;
   //camera.position.x = smoothT * -0.01 + cameraOffsetX;
 }
+
 
 //document.body.onscroll = moveCamera;
 
