@@ -6,7 +6,7 @@ function Home() {
 
         script.src = "src/components/three.ts";
         script.type = "module";
-        //script.async = true;
+        script.async = true;
 
         document.body.appendChild(script);
 
@@ -78,7 +78,8 @@ function Home() {
             <section id="home"/>
             <canvas id="scene"/>
             <div id="loading">
-                <div className="loader">Loading...</div>
+                <p>Loading...  </p>
+                <img src="icons/ZZ5H.gif" alt="loading" style={{ width: "32px", height: "32px" }}/>
             </div>
             <main>
                 <div id="text">
