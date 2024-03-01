@@ -10,33 +10,44 @@ canvas {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: -1;
 }
 
 #text {
     display: block;
 }
 
-h1,
-h2 {
-    font-family: Anta;
-    color: white;
-}
-
 h1 {
+    color: white;
+    font-family: PromptBold;
     font-size: clamp(40px, 10vw, 72px);
 }
 
 h2 {
-    font-size: 32px;
+    color: white;
+    font-family: Prompt;
+    font-size: clamp(20px, 10vw, 40px);
+}
+
+#name {
+    background-image: linear-gradient(
+        to right,
+        #00ff9d,
+        #e100ff
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px #4400ff);
 }
 
 p {
-    color: white;
+    color: transparent;
     font-size: 32px;
 }
 
 header {
-    background-color: rgba(83, 60, 99, 0.7);
+    background-color: rgb(54, 54, 54, 0.7);
     width: fit-content;
     padding: 10px 50px 10px 50px;
     margin-top: 30px;
@@ -46,36 +57,12 @@ header {
 }
 
 @font-face {
-    font-family: Anta;
-    src: url("fonts/Anta-Regular.ttf") format("truetype");
+    font-family: Prompt;
+    src: url("fonts/Prompt-Medium.ttf") format("truetype");
 }
 @font-face {
-    font-family: KodeMono;
-    src: url("fonts/KodeMono-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: KodeMonoBold;
-    src: url("fonts/KodeMono-Bold.ttf") format("truetype");
-}
-@font-face {
-    font-family: Montserrat;
-    src: url("fonts/Montserrat-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: MontserratBold;
-    src: url("fonts/Montserrat-Black.ttf") format("truetype");
-}
-@font-face {
-    font-family: KdamThmorPro;
-    src: url("fonts/KdamThmorPro-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: MadimiOne;
-    src: url("fonts/MadimiOne-Regular.ttf") format("truetype");
-}
-@font-face {
-    font-family: SpaceGrotesk;
-    src: url("fonts/SpaceGrotesk-Bold.ttf") format("truetype");
+    font-family: PromptBold;
+    src: url("fonts/Prompt-Bold.ttf") format("truetype");
 }
 @font-face {
     font-family: UbuntuMono;
@@ -85,76 +72,3 @@ header {
     font-family: UbuntuMonoBoldItalic;
     src: url("fonts/UbuntuMono-BoldItalic.ttf") format("truetype");
 }
-
-.loader {
-    transform: rotateZ(45deg);
-    perspective: 1000px;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    color: #1c63e7;
-  }
-    .loader:before,
-    .loader:after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: inherit;
-      height: inherit;
-      border-radius: 50%;
-      transform: rotateX(70deg);
-      animation: 1s spin linear infinite;
-    }
-    .loader:after {
-      color: #e100ff;
-      transform: rotateY(70deg);
-      animation-delay: .4s;
-    }
-
-  @keyframes rotate {
-    0% {
-      transform: translate(-50%, -50%) rotateZ(0deg);
-    }
-    100% {
-      transform: translate(-50%, -50%) rotateZ(360deg);
-    }
-  }
-
-  @keyframes rotateccw {
-    0% {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(-360deg);
-    }
-  }
-
-  @keyframes spin {
-    0%,
-    100% {
-      box-shadow: .2em 0px 0 0px currentcolor;
-    }
-    12% {
-      box-shadow: .2em .2em 0 0 currentcolor;
-    }
-    25% {
-      box-shadow: 0 .2em 0 0px currentcolor;
-    }
-    37% {
-      box-shadow: -.2em .2em 0 0 currentcolor;
-    }
-    50% {
-      box-shadow: -.2em 0 0 0 currentcolor;
-    }
-    62% {
-      box-shadow: -.2em -.2em 0 0 currentcolor;
-    }
-    75% {
-      box-shadow: 0px -.2em 0 0 currentcolor;
-    }
-    87% {
-      box-shadow: .2em -.2em 0 0 currentcolor;
-    }
-  }

@@ -21,7 +21,7 @@ function Home() {
                 <div id="text">
                     <header>
                         <h1>Adrian</h1>
-                        <h2>aka MochaSteve256</h2>
+                        <h2>aka <span id="name">MochaSteve256</span></h2>
                     </header>
 
                     <p>blah</p>
