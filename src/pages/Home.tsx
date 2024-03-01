@@ -15,7 +15,7 @@ function Home() {
         };
     }, []);
     return (
-        <div>
+        <div style={{ background: "#102040", display: "flex" }}>
             <canvas id="bg"></canvas>
             <main>
                 <div id="text">
@@ -24,43 +24,45 @@ function Home() {
                         <h2>aka <span id="name">MochaSteve256</span></h2>
                     </header>
 
-                    <p>blah</p>
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <p>consectetur adipiscing elit</p>
-                    <p>sed do eiusmod tempor incididunt</p>
-                    <p>ut labore et dolore magna aliqua</p>
-                    <p>Ut enim ad minim veniam</p>
-                    <p>
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                        ea commodo consequat
-                    </p>
-                    <p>
-                        Duis aute irure dolor in reprehenderit in voluptate velit
-                        esse cillum dolore eu fugiat nulla pariatur
-                    </p>
-                    <p>Excepteur sint occaecat cupidatat non proident</p>
-                    <p>
-                        sunt in culpa qui officia deserunt mollit anim id est
-                        laborum
-                    </p>
-                    <p>Lorem ipsum dolor sit amet</p>
-                    <p>consectetur adipiscing elit</p>
-                    <p>sed do eiusmod tempor incididunt</p>
-                    <p>ut labore et dolore magna aliqua</p>
-                    <p>Ut enim ad minim veniam</p>
-                    <p>
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                        ea commodo consequat
-                    </p>
-                    <p>
-                        Duis aute irure dolor in reprehenderit in voluptate velit
-                        esse cillum dolore eu fugiat nulla pariatur
-                    </p>
-                    <p>Excepteur sint occaecat cupidatat non proident</p>
-                    <p>
-                        sunt in culpa qui officia deserunt mollit anim id est
-                        laborum
-                    </p>
+                    <div id="content">
+                        <p>blah</p>
+                        <p>Lorem ipsum dolor sit amet</p>
+                        <p>consectetur adipiscing elit</p>
+                        <p>sed do eiusmod tempor incididunt</p>
+                        <p>ut labore et dolore magna aliqua</p>
+                        <p>Ut enim ad minim veniam</p>
+                        <p>
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                            ea commodo consequat
+                        </p>
+                        <p>
+                            Duis aute irure dolor in reprehenderit in voluptate velit
+                            esse cillum dolore eu fugiat nulla pariatur
+                        </p>
+                        <p>Excepteur sint occaecat cupidatat non proident</p>
+                        <p>
+                            sunt in culpa qui officia deserunt mollit anim id est
+                            laborum
+                        </p>
+                        <p>Lorem ipsum dolor sit amet</p>
+                        <p>consectetur adipiscing elit</p>
+                        <p>sed do eiusmod tempor incididunt</p>
+                        <p>ut labore et dolore magna aliqua</p>
+                        <p>Ut enim ad minim veniam</p>
+                        <p>
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                            ea commodo consequat
+                        </p>
+                        <p>
+                            Duis aute irure dolor in reprehenderit in voluptate velit
+                            esse cillum dolore eu fugiat nulla pariatur
+                        </p>
+                        <p>Excepteur sint occaecat cupidatat non proident</p>
+                        <p>
+                            sunt in culpa qui officia deserunt mollit anim id est
+                            laborum
+                        </p>
+                    </div>
                 </div>
             </main>
 

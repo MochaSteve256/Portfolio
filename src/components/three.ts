@@ -24,6 +24,8 @@ camera.rotation.y = cameraRotationOffsetY;
 camera.rotation.z = cameraRotationOffsetZ;
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("#bg") as HTMLCanvasElement,
+  antialias: true,
+  //alpha: true,
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.render(scene, camera);
