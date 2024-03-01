@@ -23,7 +23,7 @@ camera.rotation.x = cameraRotationOffsetX;
 camera.rotation.y = cameraRotationOffsetY;
 camera.rotation.z = cameraRotationOffsetZ;
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector("#bg") as HTMLCanvasElement,
+  canvas: document.querySelector("#scene") as HTMLCanvasElement,
   antialias: true,
   //alpha: true,
 });
@@ -241,7 +241,17 @@ function animate(): void {
 //spawn loading screen
 
 loadingManager.onLoad = () => {
-  //remove loading screen
-  
+  const loadingScreen: HTMLElement | null = document.getElementById("loading");
+  if (!loadingScreen) {
+    return;
+  }
+  // Fade out the loading screen
+  loadingScreen.style.opacity = '0';
+
+  // Add an event listener to remove the loading screen after the transition ends
+  loadingScreen.addEventListener('transitionend', () => {
+    loadingScreen.remove();
+  }, { once: true });
+
   animate();
 }

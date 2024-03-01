@@ -19,10 +19,16 @@ function Home() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetId = anchor.getAttribute('href');
+                const targetId: string | null = anchor.getAttribute('href');
+                if (!targetId) {
+                    return;
+                }
                 const targetElement = document.querySelector(targetId);
     
                 // Calculate the target position
+                if (!targetElement) {
+                    return;
+                }
                 const targetRect = targetElement.getBoundingClientRect();
                 const targetPosition = Math.min(
                     targetRect.top + window.scrollY,
@@ -70,7 +76,10 @@ function Home() {
     return (
         <div style={{ background: "#102040", display: "flex" }}>
             <section id="home"/>
-            <canvas id="bg"></canvas>
+            <canvas id="scene"/>
+            <div id="loading">
+                <div className="loader">Loading...</div>
+            </div>
             <main>
                 <div id="text">
                     <header>
