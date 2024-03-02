@@ -87,7 +87,7 @@ function Home() {
                     <div id="content">
                         <header>
                             <h1>Adrian</h1>
-                            <h2>aka <span id="name">MochaSteve256</span></h2>
+                            <h2>a.k.a. <span id="name">MochaSteve256</span></h2>
                         </header>
 
                         <section id="about"/>

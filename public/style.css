@@ -6,12 +6,16 @@ body {
 nav {
     position: fixed;
     width: 100%;
-    background-color: #333333;
+    background-color: rgb(54, 54, 54, .7);
+    transition: background-color 0.2s ease;
     color: #fff;
     text-align: center;
     font-family: Prompt;
     z-index: 999;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+nav:hover {
+    background-color: #222222;
 }
 nav ul {
     list-style: none;
@@ -21,22 +25,22 @@ nav ul {
 }
 nav ul li {
     display: inline-block;
-    transition: transform 0.1s ease;
 }
 nav ul li a {
     color: #fff;
     text-decoration: none;
-    text-shadow: 0 0 5px rgb(0, 0, 0);
+    text-shadow: 0 0 5px rgb(0, 255, 170);
     padding: 10px 15px;
     display: block;
-    transition: background-color 0.2s ease;
-}
-nav ul li:hover {
-    transform: scale(1.1);
-    transform-origin: center;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background-color 0.1s ease, transform 0.2s ease;
 }
 nav ul li a:hover {
-    background-color: #555;
+    transform: scale(1.2);
+    transform-origin: center;
+    background-color: #111111;
 }
 
 main {
@@ -83,11 +87,16 @@ main {
 }
 
 header {
-    background-color: rgb(54, 54, 54, 0.7);
+    background-color: rgb(54, 54, 54, .7);
+    /* background-color: rgba(0, 0, 0, 1); */
     width: fit-content;
     margin-top: 50px;
     padding: 10px 30px;
     border-radius: 10px;
+    transition: background-color 0.2s ease;
+}
+header:hover {
+    background-color: #222222;
 }
 
 h1 {
@@ -99,19 +108,22 @@ h1 {
 h2 {
     color: white;
     font-family: Prompt;
-    font-size: clamp(20px, 10vw, 40px);
+    font-size: clamp(20px, 10vw, 30px);
 }
 
 #name {
     background-image: linear-gradient(
-        to right,
+        135deg,
         #00ff9d,
-        #e100ff
+        #ffc038,
+        #ff009d
     );
+    font-size: clamp(20px, 10vw, 40px);
+    font-family: PromptBold;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 15px #4400ff);
+    filter: drop-shadow(0 0 10px #9600c4de);
 }
 
 p {
