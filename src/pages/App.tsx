@@ -74,21 +74,22 @@ function Home() {
     
 
     return (
-        <div style={{ background: "#102040", display: "flex" }}>
+        <div style={{ background: "#102040" }}>
             <section id="home"/>
             <canvas id="scene"/>
+            <canvas id="overlay"/>
             <div id="loading">
-                <p>Loading...  </p>
+                <p style={{ fontFamily: "UbuntuMono" }}>Loading...  </p>
                 <img src="icons/ZZ5H.gif" alt="loading" style={{ width: "32px", height: "32px" }}/>
             </div>
             <main>
                 <div id="text">
-                    <header>
-                        <h1>Adrian</h1>
-                        <h2>aka <span id="name">MochaSteve256</span></h2>
-                    </header>
-
                     <div id="content">
+                        <header>
+                            <h1>Adrian</h1>
+                            <h2>aka <span id="name">MochaSteve256</span></h2>
+                        </header>
+
                         <section id="about"/>
                         <p>blah</p>
                         <p>Lorem ipsum dolor sit amet</p>
