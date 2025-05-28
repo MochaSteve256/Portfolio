@@ -92,7 +92,7 @@ function addStar(
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
   // material colors
   const colors = [
-    0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff,
+    0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff,
     0xffffff, 0x7700ff, 0x00ff00, 0xffaa00, 0xff0000, 0x00ffff, 0xffff00,
   ];
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
